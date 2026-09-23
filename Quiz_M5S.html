@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Quiz: Pilastri Valoriali M5S Genova" />
+  <meta property="og:description" content="Mettiti alla prova sulle linee guida e le priorità del Movimento 5 Stelle a Genova." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://tuo-sito.it/anteprima.jpg" />
+  <title>Quiz: Pilastri Valoriali M5S Genova</title>
+  <style>
+    :root {
+      --primary: #d99b00;
+      --primary-dark: #b38000;
+      --primary-light: #fff8e1;
+      --bg-body: #faf0c2;
+      --surface: #ffffff;
+      --text-main: #0f172a;
+      --text-secondary: #334155;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --border-hover: #cbd5e1;
+      
+      --correct-bg: #ecfdf5;
+      --correct-border: #10b981;
+      --correct-text: #065f46;
+      
+      --wrong-bg: #fef2f2;
+      --wrong-border: #ef4444;
+      --wrong-text: #991b1b;
+      
+      --star-active: #f59e0b;
+      --star-inactive: #cbd5e1;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+      margin: 0;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      padding: 40px 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Filigrana ripetuta */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      background-image: url('5Stelle.png');
+      background-repeat: repeat;
+      background-position: top left;
+      background-size: 420px 420px;
+      opacity: 0.14;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: var(--surface);
+      padding: 32px 28px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      border-top: 5px solid var(--primary);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 28px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    header p {
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 580px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border);
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-hover);
+    }
+
+    .question-category {
+      display: inline-block;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--primary-dark);
+      background-color: var(--primary-light);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 12px;
+    }
+
+    .question-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      line-height: 1.45;
+      margin-bottom: 20px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
+      padding: 14px 16px;
+      background: #fafafa;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+      transition: all 0.15s ease-in-out;
+      outline: none;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      background: #ffffff;
+      border-color: var(--primary);
+      color: var(--text-main);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .option-btn:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    .option-btn:focus-visible {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(217, 155, 0, 0.25);
+    }
+
+    .option-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+
+    .option-btn.correct {
+      background-color: var(--correct-bg) !important;
+      border-color: var(--correct-border) !important;
+      color: var(--correct-text) !important;
+      font-weight: 600;
+      transform: none !important;
+    }
+
+    .option-btn.wrong {
+      background-color: var(--wrong-bg) !important;
+      border-color: var(--wrong-border) !important;
+      color: var(--wrong-text) !important;
+      transform: none !important;
+    }
+
+    .explanation {
+      margin-top: 16px;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-radius: var(--radius-sm);
+      display: none;
+      animation: fadeIn 0.25s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .explanation.show {
+      display: flex;
+      align-items: center;
+    }
+
+    .explanation.correct {
+      background-color: var(--correct-bg);
+      color: var(--correct-text);
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      border-left: 4px solid var(--correct-border);
+    }
+
+    .explanation.wrong {
+      background-color: var(--wrong-bg);
+      color: var(--wrong-text);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      border-left: 4px solid var(--wrong-border);
+    }
+
+    /* Score Section & Star Rating */
+    #score-section {
+      display: none;
+      background: var(--surface);
+      padding: 36px 24px;
+      border-radius: var(--radius-lg);
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      margin-top: 32px;
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    #score-section.show {
+      display: block;
+    }
+
+    .score-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .stars-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .star-icon {
+      width: 44px;
+      height: 44px;
+      fill: var(--star-inactive);
+      transition: fill 0.3s ease, transform 0.3s ease;
+    }
+
+    .star-icon.active {
+      fill: var(--star-active);
+    }
+
+    /* Effetto 5 Stelle Splendenti (Punteggio Massimo) */
+    .stars-wrapper.shining .star-icon {
+      fill: #ffbf00;
+      filter: drop-shadow(0 0 8px rgba(255, 191, 0, 0.75));
+      animation: pulseGlow 1.8s infinite alternate ease-in-out;
+    }
+
+    .stars-wrapper.shining .star-icon:nth-child(1) { animation-delay: 0.0s; }
+    .stars-wrapper.shining .star-icon:nth-child(2) { animation-delay: 0.15s; }
+    .stars-wrapper.shining .star-icon:nth-child(3) { animation-delay: 0.3s; }
+    .stars-wrapper.shining .star-icon:nth-child(4) { animation-delay: 0.45s; }
+    .stars-wrapper.shining .star-icon:nth-child(5) { animation-delay: 0.6s; }
+
+    @keyframes pulseGlow {
+      0% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 4px rgba(255, 191, 0, 0.5));
+      }
+      100% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 14px rgba(255, 191, 0, 0.95));
+      }
+    }
+
+    .score-rating-text {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    #score-feedback {
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto 24px auto;
+    }
+
+    .restart-btn {
+      background: var(--text-main);
+      color: #ffffff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .restart-btn:hover {
+      background: #1e293b;
+      transform: translateY(-1px);
+    }
+
+    .restart-btn:active {
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Pilastri Valoriali Movimento 5 Stelle Genova</h1>
+      <p>Verifica le priorità e le linee guida dell'azione amministrativa nel Comune di Genova.</p>
+    </header>
+
+    <div id="quiz-container"></div>
+
+    <section id="score-section">
+      <h2 class="score-title" id="score-heading">Quiz Completato!</h2>
+      
+      <!-- Contenitore icone a stella dinamiche -->
+      <div class="stars-wrapper" id="stars-display"></div>
+      
+      <div class="score-rating-text" id="score-rating-label">Valutazione: 0 / 5 Stelle</div>
+      <p id="score-feedback" style="color: var(--text-muted);"></p>
+      
+      <button class="restart-btn" onclick="initQuiz()">Ricomincia il quiz</button>
+    </section>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        id: 1,
+        category: "Domanda 1: Giustizia Sociale, Lavoro e Servizi Pubblici Locali",
+        question: "Qual è l'obiettivo prioritario del Movimento 5 Stelle a Genova nell'ambito della giustizia sociale e dei servizi pubblici locali?",
+        options: [
+          { text: "A) Privatizzare i servizi sociali per ridurne i costi di gestione.", correct: false },
+          { text: "B) Difendere e rafforzare i servizi pubblici essenziali (welfare, asili nido, politiche per la casa) e promuovere il lavoro dignitoso negli appalti.", correct: true },
+          { text: "C) Concentrare tutti gli investimenti esclusivamente nel centro cittadino.", correct: false },
+          { text: "D) Sostituire le clausole sociali negli appalti con criteri di incentivo aziendale.", correct: false }
+        ]
+      },
+      {
+        id: 2,
+        category: "Domanda 2: Legalità, Trasparenza e Monitoraggio della Spesa",
+        question: "In materia di legalità e trasparenza amministrativa, quale misura caratterizza l'azione del Movimento 5 Stelle nei contratti e nelle aziende partecipate?",
+        options: [
+          { text: "A) L'assegnazione diretta dei contratti per velocizzare le opere pubbliche.", correct: false },
+          { text: "B) La riduzione dei controlli antimafia per incentivare gli investimenti esteri.", correct: false },
+          { text: "C) La massima trasparenza nelle procedure amministrative, negli appalti e nelle nomine, con un presidio rigoroso contro la corruzione e la gestione opaca dei fondi.", correct: true },
+          { text: "D) L'eliminazione delle rendicontazioni pubbliche sui fondi del PNRR.", correct: false }
+        ]
+      },
+      {
+        id: 3,
+        category: "Domanda 3: Transizione Ecologica, Mobilità Sostenibile e Tutela del Territorio",
+        question: "Qual è l'approccio del Movimento 5 Stelle di Genova in tema di sviluppo urbano e mobilità sostenibile?",
+        options: [
+          { text: "A) Incentivare il trasporto privato a combustibile fossile e costruire nuovi parcheggi in centro.", correct: false },
+          { text: "B) Dare priorità al trasporto pubblico locale a basse emissioni (elettrificazione flotta AMT), alla manutenzione del territorio contro il dissesto e allo stop al consumo di suolo.", correct: true },
+          { text: "C) Favorire nuove colate di cemento nelle aree verdi e nelle zone collinari.", correct: false },
+          { text: "D) Sostituire la raccolta differenziata puntuale con la gestione indistinta dei rifiuti.", correct: false }
+        ]
+      },
+      {
+        id: 4,
+        category: "Domanda 4: Etica Pubblica e Sobrietà Istituzionale",
+        question: "Cosa si intende per \"sobrietà istituzionale\" nell'azione di governo del Movimento 5 Stelle a Genova?",
+        options: [
+          { text: "A) L'azzeramento di qualsiasi investimento pubblico nei servizi essenziali.", correct: false },
+          { text: "B) Un utilizzo rigoroso delle risorse affinché ogni euro speso generi benefici tangibili per la collettività.", correct: true },
+          { text: "C) La rinuncia totale a presentare bilanci preventivi e consuntivi.", correct: false },
+          { text: "D) L'assegnazione delle risorse comunali in base a logiche di appartenenza politica o clientelare.", correct: false }
+        ]
+      },
+      {
+        id: 5,
+        category: "Domanda 5: Partecipazione, Ascolto e Centralità dei Municipi",
+        question: "Come intende promuovere la partecipazione cittadina il Movimento 5 Stelle nell'amministrazione comunale?",
+        options: [
+          { text: "A) Sopprimendo i Municipi per centralizzare ogni decisione a Palazzo Tursi.", correct: false },
+          { text: "B) Valorizzando i Municipi come organi di prossimità reale e coinvolgendo sistematicamente comitati e associazioni nei processi decisionali.", correct: true },
+          { text: "C) Limitando le consultazioni pubbliche alle sole scadenze elettorali.", correct: false },
+          { text: "D) Sostituire il bilancio partecipativo con decisioni unilaterali della Giunta.", correct: false }
+        ]
+      }
+    ];
+
+    let userAnswers = {};
+
+    function initQuiz() {
+      userAnswers = {};
+      const container = document.getElementById("quiz-container");
+      const scoreSection = document.getElementById("score-section");
+      scoreSection.classList.remove("show");
+      container.innerHTML = "";
+
+      questions.forEach((q, qIndex) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.id = `card-${qIndex}`;
+
+        const cat = document.createElement("div");
+        cat.className = "question-category";
+        cat.textContent = q.category;
+
+        const title = document.createElement("div");
+        title.className = "question-title";
+        title.textContent = q.question;
+
+        const optionsDiv = document.createElement("div");
+        optionsDiv.className = "options";
+
+        q.options.forEach((opt, optIndex) => {
+          const btn = document.createElement("button");
+          btn.className = "option-btn";
+          btn.innerHTML = opt.text;
+          btn.onclick = () => selectOption(qIndex, optIndex);
+          optionsDiv.appendChild(btn);
+        });
+
+        const feedback = document.createElement("div");
+        feedback.className = "explanation";
+        feedback.id = `feedback-${qIndex}`;
+
+        card.appendChild(cat);
+        card.appendChild(title);
+        card.appendChild(optionsDiv);
+        card.appendChild(feedback);
+        container.appendChild(card);
+      });
+    }
+
+    function selectOption(qIndex, selectedOptIndex) {
+      if (userAnswers[qIndex] !== undefined) return;
+
+      userAnswers[qIndex] = selectedOptIndex;
+      const q = questions[qIndex];
+      const card = document.getElementById(`card-${qIndex}`);
+      const buttons = card.querySelectorAll(".option-btn");
+      const feedback = document.getElementById(`feedback-${qIndex}`);
+      const isCorrect = q.options[selectedOptIndex].correct;
+
+      buttons.forEach((btn, idx) => {
+        btn.disabled = true;
+        if (q.options[idx].correct) {
+          btn.classList.add("correct");
+        } else if (idx === selectedOptIndex) {
+          btn.classList.add("wrong");
+        }
+      });
+
+      feedback.classList.add("show", isCorrect ? "correct" : "wrong");
+      feedback.textContent = isCorrect 
+        ? "✓ Risposta corretta!" 
+        : "✗ Risposta errata. L'opzione corretta è stata evidenziata in verde.";
+
+      if (Object.keys(userAnswers).length === questions.length) {
+        showFinalScore();
+      }
+    }
+
+    function showFinalScore() {
+      let rawScore = 0;
+      questions.forEach((q, idx) => {
+        if (q.options[userAnswers[idx]].correct) {
+          rawScore++;
+        }
+      });
+
+      // Mappatura: minimo 1 stella, massimo 5 stelle
+      const starsEarned = Math.max(1, rawScore);
+
+      const scoreSection = document.getElementById("score-section");
+      const scoreHeading = document.getElementById("score-heading");
+      const starsContainer = document.getElementById("stars-display");
+      const scoreRatingLabel = document.getElementById("score-rating-label");
+      const scoreFeedback = document.getElementById("score-feedback");
+
+      // Reset layer stelle
+      starsContainer.innerHTML = "";
+      starsContainer.classList.remove("shining");
+
+      // Generazione SVG vettoriale per le 5 stelle
+      const starSvg = `
+        <svg class="star-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+      `;
+
+      for (let i = 1; i <= 5; i++) {
+        const divWrapper = document.createElement("div");
+        divWrapper.innerHTML = starSvg.trim();
+        const svgEl = divWrapper.firstChild;
+        if (i <= starsEarned) {
+          svgEl.classList.add("active");
+        }
+        starsContainer.appendChild(svgEl);
+      }
+
+      scoreRatingLabel.textContent = `Valutazione: ${starsEarned} su 5 Stelle`;
+
+      // Gestione caso massimo: 5 Stelle Splendenti e Congratulazioni
+      if (rawScore === 5) {
+        starsContainer.classList.add("shining");
+        scoreHeading.textContent = "★ Congratulazioni! Punteggio Pieno! ★";
+        scoreFeedback.textContent = "Eccellente! Conosci in modo impeccabile tutti i pilastri programmatici del Movimento 5 Stelle a Genova. Ti Meriti 5 Stelle!";
+      } else if (rawScore >= 3) {
+        scoreHeading.textContent = "Quiz Completato!";
+        scoreFeedback.textContent = "Buon risultato! Hai dimostrato una solida conoscenza dei valori di governo e delle direttive locali.";
+      } else {
+        scoreHeading.textContent = "Quiz Completato!";
+        scoreFeedback.textContent = "Valutazione base: ti invitiamo a ripassare le linee programmatiche e a ripetere la verifica.";
+      }
+
+      scoreSection.classList.add("show");
+      scoreSection.scrollIntoView({ behavior: "smooth" });
+    }
+
+    window.onload = initQuiz;
+  </script>
+</body>
+</html>
